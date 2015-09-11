@@ -1,36 +1,48 @@
 <html lang="en"><head>
-	<meta charset="UTF-8">
-	<title>Test</title>
+<meta charset="UTF-8">
+<title>Test</title>
 </head>
-<body style="
-    padding: 0;
-    margin: 0;
-    background-color: cadetblue;">
-	<div id="wrapper" style="
-    width: 300px;
-    height: 50px;
-    background-color: rebeccapurple;
-    left: calc(50%-300px);
-    position: absolute;
-    left: 37%;
-    top: 150px;">
-		<div contenteditable="true" style="
-    height: 50px;
-    line-height: 50px;
-    font-size: 38px;
-    color: white;
-    text-align: center;
-    min-width: 280px;
-    margin: 0 auto;
-    left: 50%;
-    transform: translateX(-50%);
-    position: absolute;
-    max-height: 50px;
-    white-space: nowrap;
-    font-family: sans-serif;
-    background-color: rebeccapurple;
-    padding: 0 10px;"></div>
-	</div>
+<body>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            background-color: cadetblue;
+        }
+        #wrapper {
+            width: 300px;
+            height: 50px;
+            background-color: rebeccapurple;
+            -webkit-transform: translateX(-50%);
+                    transform: translateX(-50%);
+            left: 50%;
+            position: absolute;
+            top: 150px;
+        }
+        #wrapper > div {
+            height: 50px;
+            line-height: 50px;
+            font-size: 38px;
+            color: white;
+            text-align: center;
+            min-width: 280px;
+            margin: 0 auto;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+                    transform: translateX(-50%);
+            position: absolute;
+            max-height: 50px;
+            white-space: nowrap;
+            font-family: sans-serif;
+            background-color: rebeccapurple;
+            padding: 0 10px;
+        }
+
+    </style>
+    <div id="wrapper"> 
+        <div contenteditable="true">
+        </div>
+    </div>
 
 
 </body></html>
