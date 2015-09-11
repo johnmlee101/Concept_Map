@@ -28,7 +28,10 @@
 
 		<div id="center">
 			<canvas width="800" height="600" id="canvas"></canvas>
-			<div contenteditable="true" class="wordElem" onkeyup="resize()" onkeydown="resize()"></div>
+
+			<div class="word-elem">
+				<div contenteditable="true" class="editable-word" onkeydown="resize()" onkeypress="resize()"></div>
+			</div>
 		</div>
 
 		<script type="application/javascript">

@@ -30,15 +30,29 @@ canvas {
 	position: relative;
 }
 
-.wordElem {
-	text-align: center;
-	font-size: 14px;
-	line-height: 25px;
-	overflow: hidden;
+.word-elem {
+	width: 60px;
+	height: 25px;
+	-webkit-transform: translateX(-50%);
+	        transform: translateX(-50%);
 	position: absolute;
 	display: none;
 	color: white;
-	font-family: sans-serif;
-	word-wrap: none;
-	background-color: blue;
+}
+.editable-word {
+	height: 25px;
+	line-height: 25px;
+	font-size: 21px;
+	color: white;
+	text-align: center;
+	min-width: 60px;
+	margin: 0 auto;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	        transform: translateX(-50%);
+	position: absolute;
+	max-height: 50px;
+	white-space: nowrap;
+	font-family: 'Courier';
+	padding: 0 10px;
 }

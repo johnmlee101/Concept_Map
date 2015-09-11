@@ -4,6 +4,7 @@ var lines = [];
 var connections = [];
 
 var editing = false;
+var editingNode = -1;
 
 var mousedown = false;
 
@@ -11,7 +12,8 @@ var canvasElem = document.getElementById("canvas");
 var canvas = canvasElem.getContext("2d");
 canvas.imageSmoothingEnabled = false;
 
-var wordElem = $(".wordElem");
+var wordElem = $(".word-elem");
+var editableWord = $('.editable-word');
 		
 
 (function init() {
@@ -43,10 +45,12 @@ var wordElem = $(".wordElem");
 		
 		if (inNode == startNode) {
 			var node = nodes[inNode];
-			wordElem.css("width", node.width + "px");
-			wordElem.css("left", node.x - (node.width/2)+"px");
+			// wordElem.css("width", node.width + "px");
+			editingNode = inNode;
+			wordElem.css("left", node.x + "px");
 			wordElem.css("top",  node.y + (node.height/2)+"px");
 			wordElem.show();
+			editableWord.focus();
 		} else if (inNode >= 0 && startNode >= 0) {
 			var connection = [startNode, inNode];
 			connections.push(connection);
@@ -88,10 +92,14 @@ function Node(x, y, width, height, color) {
 	this.color = color;
 	this.radius = 5;
 
+
 	this.text = "";
 	
 
 	this.draw = function() {
+		canvas.strokeStyle = "#00E6B8";
+		canvas.fillStyle = "#00FFFF";
+		canvas.lineWidth = 5;
 		canvas.beginPath();
 		canvas.moveTo(this.x - this.width/2 + this.radius, this.y - this.height/2);
 		canvas.lineTo(this.x + this.width/2 - this.radius, this.y - this.height/2);
@@ -114,7 +122,12 @@ function clearCanvas() {
 	canvas.clearRect(0 , 0 , canvasElem.width, canvasElem.height);
 }
 	
-	
+function resize() {
+	if (editingNode > -1) {
+		nodes[editingNode].width = editableWord.width() + 16;
+		nodes[editingNode].draw();
+	}
+}
 	
 	
 	
