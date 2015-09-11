@@ -14,7 +14,7 @@ canvas.imageSmoothingEnabled = false;
 var wordElem = $(".wordElem");
 		
 
-function init() {
+(function init() {
 	canvasElem.addEventListener("mousedown", function(event) {
 		mouseDown = true;
 		
@@ -54,7 +54,7 @@ function init() {
 			startNode = -1;
 		}
 	}, false);
-}
+})();
 
 function insideNode(x, y) {
 	for (var i = 0; i < nodes.length; i++) {
