@@ -28,18 +28,23 @@
 		<div id="left-card">
 			<h1>Title</h1>
 			<div class="content">
-			Description or experiment info goes here
+				Description or experiment info goes here
 			</div>
 		</div>
-		<div id="center">
-			<canvas width="1000" height="1000" id="canvas"></canvas>
-			<div class="word-elem">
-				<div contenteditable="true" class="editable-word" onkeydown="resize()" onkeypress="resize()"></div>
+		<div id="right-card">
+
+			<div class="canvas-holder">
+				<canvas width="500px" height="500px" id="canvas"></canvas>
 			</div>
+
 			<div id="toolbar">
-			<div selected>+</div>
-			<div>Edit</div>
-			<div>Draw</div>
+				<div selected>Add</div>
+				<div>Edit</div>
+				<div>Draw</div>
+			</div>
+
+			<div class="word-elem">
+				<div contenteditable="true" class="editable-word" onkeydown="editKeyChange()" onkeypress="editKeyChange()" onkeyup="editKeyChange()"></div>
 			</div>
 		</div>
 
