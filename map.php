@@ -25,10 +25,14 @@
 
 	</head>
 	<body>
-
+		<div id="left-card">
+			<h1>Title</h1>
+			<div class="content">
+			Description or experiment info goes here
+			</div>
+		</div>
 		<div id="center">
-			<canvas width="800" height="600" id="canvas"></canvas>
-
+			<canvas width="1000" height="1000" id="canvas"></canvas>
 			<div class="word-elem">
 				<div contenteditable="true" class="editable-word" onkeydown="resize()" onkeypress="resize()"></div>
 			</div>

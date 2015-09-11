@@ -9,6 +9,8 @@ var editingNode = -1;
 var mousedown = false;
 
 var canvasElem = document.getElementById("canvas");
+canvasElem.setAttribute('width', $("#center").width());
+canvasElem.setAttribute('height', $("#center").height());
 var canvas = canvasElem.getContext("2d");
 canvas.imageSmoothingEnabled = false;
 
