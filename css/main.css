@@ -84,6 +84,7 @@ canvas {
 	white-space: nowrap;
 	font-family: 'Courier';
 	padding: 0 10px;
+	outline: none;
 }
 
 .content { 
