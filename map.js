@@ -24,7 +24,7 @@ var wordElem = $(".wordElem");
 		var inNode = insideNode(x, y);
 
 		if (inNode < 0) {
-			var node = new rectangle(x, y, 60, 25, 'blue');
+			var node = new Node(x, y, 60, 25, 'blue');
 			node.draw();
 			nodes.push(node);
 		} else {
@@ -78,34 +78,35 @@ function drawLine(x, y, x2, y2, color) {
 }
 
 
-function rectangle(x, y, width, height, color) {
+function Node(x, y, width, height, color) {
 	this.x = x;
 	this.y = y;
-	this.deltaX = 0;
-	this.deltaY = 0;
-	this.angle = 0;
-	this.deltaAngle = 0;
 	
 	this.width = width;
 	this.height = height;
-	this.deltaWidth = 0;
-	this.deltaHeight = 0;
 	
 	this.color = color;
+	this.radius = 5;
+
+	this.text = "";
 	
-	this.radAngle = function() {
-		return (this.angle*Math.PI)/180;
-	}
 
 	this.draw = function() {
-		canvas.save();
-		canvas.translate(this.x, this.y);
-		canvas.rotate(this.radAngle());
+		canvas.beginPath();
+		canvas.moveTo(this.x - this.width/2 + this.radius, this.y - this.height/2);
+		canvas.lineTo(this.x + this.width/2 - this.radius, this.y - this.height/2);
+		canvas.quadraticCurveTo(this.x + this.width/2, this.y - this.height/2, this.x + this.width/2, this.y + this.radius - this.height/2);
+		canvas.lineTo(this.x + this.width/2, this.y + this.height/2 - this.radius);
+		canvas.quadraticCurveTo(this.x + this.width/2, this.y + this.height/2, this.x + this.width/2 - this.radius, this.y + this.height/2);
+		canvas.lineTo(this.x + this.radius - this.width/2, this.y + this.height/2);
+		canvas.quadraticCurveTo(this.x - this.width/2, this.y + this.height/2, this.x - this.width/2, this.y + this.height/2 - this.radius);
+		canvas.lineTo(this.x - this.width/2, this.y + this.radius - this.height/2);
+		canvas.quadraticCurveTo(this.x - this.width/2, this.y - this.height/2, this.x + this.radius - this.width/2, this.y - this.height/2);
+		canvas.closePath();
 		
-		canvas.fillStyle = color;
-		canvas.fillRect(-(this.width/2), -(this.height/2), this.width, this.height);
-		
-		canvas.restore();
+		canvas.stroke();
+		canvas.fill();
+   
 	}
 }
 
