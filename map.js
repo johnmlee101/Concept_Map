@@ -10,7 +10,7 @@ var mousedown = false;
 
 var canvasElem = document.getElementById("canvas");
 canvasElem.setAttribute('width', $("#center").width());
-canvasElem.setAttribute('height', $("#center").height());
+canvasElem.setAttribute('height', $("#center").height() - 100);
 var canvas = canvasElem.getContext("2d");
 canvas.imageSmoothingEnabled = false;
 

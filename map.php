@@ -36,6 +36,9 @@
 			<div class="word-elem">
 				<div contenteditable="true" class="editable-word" onkeydown="resize()" onkeypress="resize()"></div>
 			</div>
+			<div id="toolbar">
+			<div>+</div>
+			</div>
 		</div>
 
 		<script type="application/javascript">
