@@ -66,22 +66,27 @@ canvas {
 }
 #toolbar div {
 	background: #4DB6AC;
+	float: left;
 	border: 0px solid #ccc;
-	font-size: 2em;
+	font-size: 1.5em;
 	text-align: center;
 	line-height: 98px;
 	color: white;
 	width: 100px;
 	height: 98px;
-	transition: all 0.2s;
-	-mox-transition: all 0.2s;
-	-webkit-transition: all 0.2s;
+	font-weight: 200;
+	transition: all 0.1s;
+	-mox-transition: all 0.1s;
+	-webkit-transition: all 0.1s;
 }
 #toolbar div:hover {
-	box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+	box-shadow: 3px 3px 6px rgba(0,0,0,0.2);
 	cursor: pointer;
 	-webkit-transform: scale(1.05);
 	        transform: scale(1.05);
+}
+#toolbar div[selected] {
+	background: rgba(255,255,50,0.6);
 }
 .word-elem {
 	width: 60px;

@@ -37,7 +37,9 @@
 				<div contenteditable="true" class="editable-word" onkeydown="resize()" onkeypress="resize()"></div>
 			</div>
 			<div id="toolbar">
-			<div>+</div>
+			<div selected>+</div>
+			<div>Edit</div>
+			<div>Draw</div>
 			</div>
 		</div>
 
