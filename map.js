@@ -124,8 +124,8 @@ function Node(x, y, width, height) {
 	
 
 	this.draw = function(noText) {
-		canvas.strokeStyle = "#00E6B8";
-		canvas.fillStyle = "#00FFFF";
+		canvas.strokeStyle = "#23b6b8";
+		canvas.fillStyle = "#5DC6BC";
 		canvas.lineWidth = 5;
 
 		this.width = canvas.measureText(this.textContent).width + 28;
