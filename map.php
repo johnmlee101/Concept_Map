@@ -34,7 +34,8 @@
 		<div id="right-card">
 
 			<div class="canvas-holder">
-				<canvas width="500px" height="500px" id="canvas"></canvas>
+				<canvas width="500px" height="500px" id="backgroundCanvas" class="canvas"></canvas>
+				<canvas width="500px" height="500px" id="canvas" class="canvas"></canvas>
 			</div>
 
 			<div id="toolbar">
