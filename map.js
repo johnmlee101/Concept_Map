@@ -35,7 +35,7 @@ var editableWord = $('.editable-word');
   				$(".canvas-holder").css("cursor","text");
   				break;
     		case "Draw":
-  				$(".canvas-holder").css("cursor",'url("css/pencil.gif"), crosshair');
+  				$(".canvas-holder").css("cursor",'url("css/pencil.png"), crosshair');
   				break;
   		}
 	});
