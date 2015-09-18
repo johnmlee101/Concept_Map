@@ -20,6 +20,7 @@
 		<!-- Scripts
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="jquery.autoGrowInput.js"></script>
 		
 		<!--<script src="js/main.js"></script>-->
 
@@ -42,10 +43,11 @@
 				<div selected>Add</div>
 				<div>Edit</div>
 				<div>Draw</div>
+				<div>Move</div>
 			</div>
 
 			<div class="word-elem">
-				<div contenteditable="true" class="editable-word" onkeydown="editKeyChange()" onkeypress="editKeyChange()" onkeyup="editKeyChange()"></div>
+				<input type="text" class="editable-word" onkeydown="editKeyChange()" onkeypress="editKeyChange()" onkeyup="editKeyChange()"></div>
 			</div>
 		</div>
 

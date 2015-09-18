@@ -75,7 +75,7 @@ html {
 }
 
 .canvas-holder {
-	cursor: cell;
+	cursor: copy;
 	position: absolute;
 	top: 0;
 	bottom: 100px;
@@ -138,7 +138,7 @@ html {
 	height: 50px;
 	line-height: 50px;
 	font-size: 28px;
-	font-weight: 600;
+	/*font-weight: 600;*/
 	color: white;
 	text-align: center;
 	min-width: 60px;
@@ -149,8 +149,10 @@ html {
 	position: absolute;
 	max-height: 50px;
 	white-space: nowrap;
-	font-family: 'Courier';
+	font-family: 'Oxygen';
 	padding: 0 10px;
 	outline: none;
+	background: none;
+	border: none;
 }
 
