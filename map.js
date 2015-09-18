@@ -38,7 +38,7 @@ var editableWord = $('.editable-word');
   		mode = $(this).html();
   		switch(mode) {
   			case "Add":
-  				$(".canvas-holder").css("cursor","crosshair");
+  				$(".canvas-holder").css("cursor","cell");
   				break;
     		case "Edit":
   				$(".canvas-holder").css("cursor","text");
