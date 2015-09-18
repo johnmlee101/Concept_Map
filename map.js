@@ -27,6 +27,17 @@ var editableWord = $('.editable-word');
   		$("#toolbar div[selected]").removeAttr("selected");
   		$(this).attr("selected", "");
   		mode = $(this).html();
+  		switch(mode) {
+  			case "Add":
+  				$(".canvas-holder").css("cursor","crosshair");
+  				break;
+    		case "Edit":
+  				$(".canvas-holder").css("cursor","text");
+  				break;
+    		case "Draw":
+  				$(".canvas-holder").css("cursor",'url("css/pencil.gif"), crosshair');
+  				break;
+  		}
 	});
 
 	canvasElem.addEventListener("mousedown", function(event) {
