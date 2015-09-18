@@ -75,6 +75,7 @@ html {
 }
 
 .canvas-holder {
+	cursor: crosshair;
 	position: absolute;
 	top: 0;
 	bottom: 100px;

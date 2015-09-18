@@ -36,6 +36,17 @@ var editableWord = $('.editable-word');
   		$("#toolbar div[selected]").removeAttr("selected");
   		$(this).attr("selected", "");
   		mode = $(this).html();
+  		switch(mode) {
+  			case "Add":
+  				$(".canvas-holder").css("cursor","crosshair");
+  				break;
+    		case "Edit":
+  				$(".canvas-holder").css("cursor","text");
+  				break;
+    		case "Draw":
+  				$(".canvas-holder").css("cursor",'url("css/pencil.gif"), crosshair');
+  				break;
+  		}
 	});
 
 	canvasElem.addEventListener("mousemove", function(event) {
@@ -194,8 +205,8 @@ function Node(x, y, width, height) {
 	
 
 	this.draw = function(noText) {
-		canvas.strokeStyle = "#00E6B8";
-		canvas.fillStyle = "#00FFFF";
+		canvas.strokeStyle = "#23b6b8";
+		canvas.fillStyle = "#5DC6BC";
 		canvas.lineWidth = 5;
 
 		this.width = canvas.measureText(this.textContent).width + 28;
