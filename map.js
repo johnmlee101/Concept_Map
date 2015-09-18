@@ -6,12 +6,20 @@ var connections = [];
 var mode = "Add";
 
 var editingNode = -1;
+var drawingInterval;
 
-var mousedown = false;
+var mouse = new Mouse();
 
 var canvasElem = document.getElementById("canvas");
 canvasElem.setAttribute('width', $(".canvas-holder").width());
 canvasElem.setAttribute('height', $(".canvas-holder").height());
+
+var backgroundCanvasElem = document.getElementById("backgroundCanvas");
+backgroundCanvasElem.setAttribute('width', $(".canvas-holder").width());
+backgroundCanvasElem.setAttribute('height', $(".canvas-holder").height());
+
+var backgroundCanvas = backgroundCanvasElem.getContext("2d");
+backgroundCanvas.imageSmoothingEnabled = false;
 
 var canvas = canvasElem.getContext("2d");
 canvas.imageSmoothingEnabled = false;
@@ -19,6 +27,7 @@ canvas.font = "bold 28px Courier";
 
 var wordElem = $(".word-elem");
 var editableWord = $('.editable-word');
+
 		
 
 (function init() {
@@ -40,10 +49,17 @@ var editableWord = $('.editable-word');
   		}
 	});
 
-	canvasElem.addEventListener("mousedown", function(event) {
-		mouseDown = true;
+	canvasElem.addEventListener("mousemove", function(event) {
+		mouse.setPosition(
+			Math.round(event.clientX - canvasElem.getBoundingClientRect().left),
+			Math.round(event.clientY - canvasElem.getBoundingClientRect().top)
+		);
 
-		var mouse = new Mouse();
+	});
+
+	canvasElem.addEventListener("mousedown", function(event) {
+		mouse.mouseDown = true;
+
 		switch(mode) {
 			case "Add":
 				addNode(mouse.x, mouse.y);
@@ -52,12 +68,49 @@ var editableWord = $('.editable-word');
 				editNode(mouse.x, mouse.y);
 				break;
 			case "Draw":
+				startDrawing(mouse.x, mouse.y);
 				break;
 		}
 	}, false);
 
 	canvasElem.addEventListener("mouseup", function(event) {
-		mouseDown = false;
+		mouse.mouseDown = false;
+		
+		switch(mode) {
+			case "Draw":
+				clearInterval(drawingInterval);
+				var finishedInNode = insideNode(mouse.x, mouse.y);
+				if (finishedInNode >= 0 && startDrawingNode >= 0 && startDrawingNode != finishedInNode) {
+
+					var connection = {
+						start: startDrawingNode,
+						end: finishedInNode
+					};
+
+					if (finishedInNode < startDrawingNode) {
+						connection.start = finishedInNode;
+						connection.end = startDrawingNode;
+					} 
+
+					var found = false;
+					connections.forEach(function(item) {
+						if (item.start == connection.start && item.end == connection.end) {
+							found = true;
+						}
+					});
+
+					if (!found) {
+						connections.push(connection);
+					}
+
+					console.log(connections);
+				}
+				startDrawingNode = -1;
+				renderBackgroundCanvas();
+				break;
+				
+		}
+
 		
 			// var connection = [startNode, inNode];
 			// connections.push(connection);
@@ -86,14 +139,42 @@ function insideNode(x, y) {
 	
 	return -1;
 }
+
+function startDrawing(x, y) {
+
+	var startX = -1;
+	var startY = -1;
+
+	var node = insideNode(x, y);
+	if (node >= 0) {
+		startDrawingNode = node;
+		startX = nodes[node].x;
+		startY = nodes[node].y;
+		drawingInterval = setInterval(function() {
+			renderBackgroundCanvas();
+			drawLine(startX, startY, mouse.x, mouse.y, "black");
+		}, 20);
+	} else {
+		startDrawingNode = -1;
+	}
+}
+
+function renderBackgroundCanvas() {
+	backgroundCanvas.clearRect(0, 0, backgroundCanvasElem.width, backgroundCanvasElem.height);
+	for (var i = 0; i < connections.length; i++) {
+		var beginNode = nodes[connections[i].start];
+		var endNode = nodes[connections[i].end];
+		drawLine(beginNode.x, beginNode.y, endNode.x, endNode.y, "black");
+	}
+}
 	
 function drawLine(x, y, x2, y2, color) {
-	canvas.beginPath();
-	canvas.moveTo(x, y);
-	canvas.lineTo(x2, y2);
-	canvas.closePath();
-	canvas.strokeStyle = color;
-	canvas.stroke();
+	backgroundCanvas.beginPath();
+	backgroundCanvas.moveTo(x, y);
+	backgroundCanvas.lineTo(x2, y2);
+	backgroundCanvas.closePath();
+	backgroundCanvas.strokeStyle = color;
+	backgroundCanvas.stroke();
 }
 
 
@@ -206,8 +287,15 @@ function editNode(x, y) {
 }
 
 function Mouse() {
-	this.x = Math.round(event.clientX - canvasElem.getBoundingClientRect().left);
-	this.y = Math.round(event.clientY - canvasElem.getBoundingClientRect().top);
+	this.x = 0;
+	this.y = 0;
+
+	this.setPosition = function(x, y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	this.mouseDown = false;
 }
 	
 	
