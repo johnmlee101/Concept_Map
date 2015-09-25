@@ -1,11 +1,12 @@
 var nodes = [];
 var startNode = -1;
 var lines = [];
-var connections = [];
+//var connections = [];
 
-var mode = "Add";
+var mode = "Select";
 
 var editingNode = -1;
+var selectedNode = -1;
 var drawingInterval;
 var movingNodeInterval;
 
@@ -46,6 +47,9 @@ editableWord.autoGrowInput({minWidth:30,comfortZone:30});
 		}
 	
 		switch(mode) {
+			case "Select":
+				$(".canvas-holder").css("cursor","default");
+				break;
 			case "Add":
 				$(".canvas-holder").css("cursor","copy");
 				break;
@@ -71,9 +75,13 @@ editableWord.autoGrowInput({minWidth:30,comfortZone:30});
 	});
 
 	canvasElem.addEventListener("mousedown", function(event) {
+		console.log("down");
 		mouse.mouseDown = true;
 
 		switch(mode) {
+			case "Select":
+				selectNode(mouse.x, mouse.y);
+				break;
 			case "Add":
 				addNode(mouse.x, mouse.y);
 				break;
@@ -89,7 +97,42 @@ editableWord.autoGrowInput({minWidth:30,comfortZone:30});
 		}
 	}, false);
 
+	canvasElem.addEventListener("dblclick", function(event) {
+		//window.getSelection().removeAllRanges();
+		console.log("doubleClick");
+		switch(mode) {
+			case "Select":
+				if (insideNode(mouse.x, mouse.y) < 0) {
+					addNode(mouse.x, mouse.y);
+				}
+
+				break;
+		}	
+	});
+
+	canvasElem.addEventListener("keydown", function(event) {
+		
+		switch(mode) {
+			case "Select":
+				if (event.which == 46) {
+					deleteNode();
+				} else if (selectedNode >= 0 && String.fromCharCode(event.which).match(/[a-zA-Z0-9]/)) {
+					editNode(nodes[selectedNode].x, nodes[selectedNode].y);
+				}
+				break;
+			case "Add":
+				break;
+			case "Edit":
+				break;
+			case "Draw":
+				break;
+			case "Move":
+				break;
+		}
+	}, false);
+
 	canvasElem.addEventListener("mouseup", function(event) {
+		console.log("up");
 		mouse.mouseDown = false;
 		
 		switch(mode) {
@@ -97,29 +140,8 @@ editableWord.autoGrowInput({minWidth:30,comfortZone:30});
 				clearInterval(drawingInterval);
 				var finishedInNode = insideNode(mouse.x, mouse.y);
 				if (finishedInNode >= 0 && startDrawingNode >= 0 && startDrawingNode != finishedInNode) {
-
-					var connection = {
-						start: startDrawingNode,
-						end: finishedInNode
-					};
-
-					if (finishedInNode < startDrawingNode) {
-						connection.start = finishedInNode;
-						connection.end = startDrawingNode;
-					} 
-
-					var found = false;
-					connections.forEach(function(item) {
-						if (item.start == connection.start && item.end == connection.end) {
-							found = true;
-						}
-					});
-
-					if (!found) {
-						connections.push(connection);
-					}
-
-					console.log(connections);
+					nodes[startDrawingNode].addConnection(finishedInNode);
+					nodes[finishedInNode].addConnection(startDrawingNode);
 				}
 				startDrawingNode = -1;
 				renderBackgroundCanvas();
@@ -135,6 +157,7 @@ editableWord.autoGrowInput({minWidth:30,comfortZone:30});
 
 function insideNode(x, y) {
 	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i] === undefined) continue;
 		if (x < nodes[i].x + nodes[i].width/2  && x > nodes[i].x - nodes[i].width/2 && 
 			y < nodes[i].y + nodes[i].height/2 && y > nodes[i].y - nodes[i].height/2) {
 			console.log("Inside node", i);
@@ -166,16 +189,21 @@ function startDrawing(x, y) {
 
 function renderBackgroundCanvas() {
 	backgroundCanvas.clearRect(0, 0, backgroundCanvasElem.width, backgroundCanvasElem.height);
-	for (var i = 0; i < connections.length; i++) {
-		var beginNode = nodes[connections[i].start];
-		var endNode = nodes[connections[i].end];
-		drawLine(beginNode.x, beginNode.y, endNode.x, endNode.y, "black");
+	for (var i = 0; i < nodes.length; i++) {
+
+		var beginNode = nodes[i];
+		if (beginNode === undefined) continue;
+		for (var j = 0; j < beginNode.connections.length; j++) {
+			var endNode = nodes[beginNode.connections[j]];
+			drawLine(beginNode.x, beginNode.y, endNode.x, endNode.y, "black");
+		}	
 	}
 }
 	
 function renderCanvas() {
 	canvas.clearRect(0, 0, backgroundCanvasElem.width, backgroundCanvasElem.height);
 	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i] === undefined) continue;
 		nodes[i].draw();
 	}
 }
@@ -186,8 +214,8 @@ function drawLine(x, y, x2, y2, color) {
 	backgroundCanvas.lineTo(x2, y2);
 	backgroundCanvas.closePath();
 	backgroundCanvas.strokeStyle = color;
-	backgroundCanvas.stroke();
-}
+	backgroundCanvas.stroke()
+;}
 
 
 function Node(x, y, width, height) {
@@ -199,37 +227,38 @@ function Node(x, y, width, height) {
 	
 	this.radius = 5;
 
-
 	this.textContent = "";
 
-	this.text = function(newText) {
-		if (newText.length < this.textContent.length) {
-			console.log("smaller");
-			//var clearWidth = canvas.measureText(this.textContent).width + 28 + 6;
-			//var clearHeight = this.height + 6
-			//clearWidth = clearWidth < 175 ? 175 : clearWidth;
-			//canvas.clearRect(this.x - this.width/2 - 3, this.y - this.height/2 - 3, clearWidth, clearHeight);
-			this.textContent = newText;
-			renderCanvas();
-			this.draw("NoText");
-		}
-		this.textContent = newText;
+	this.selected = false;
 
-		nodes[editingNode].draw("noText");
+	this.connections = [];
+
+	this.addConnection = function(connection) {
+		if (this.connections.indexOf(connection) >= 0) return;
+		this.connections.push(connection);
+	}
+
+	this.removeConnection = function(connection) {
+		var removeIdx = this.connections.indexOf(connection);
+		if (removeIdx < 0) return;
+		
+		this.connections.splice(removeIdx, 1);
+	}
+
+	this.text = function(newText) {
+		this.textContent = newText;
+		renderCanvas();
+		this.draw("NoText");
 	}
 	
-
-	this.draw = function(noText) {
-		canvas.strokeStyle = "#23b6b8";
-		canvas.fillStyle = "#5DC6BC";
-		canvas.lineWidth = 5;
-
-		this.width = canvas.measureText(this.textContent).width + 28;
-		this.width = this.width < 175 ? 175 : this.width;
-
+	this.drawNode = function(fillColor, strokeColor, lineWidth) {
+		canvas.fillStyle    =  fillColor;
+		canvas.strokeStyle  =  strokeColor;
+		canvas.lineWidth    =  lineWidth;
 
 		canvas.beginPath();
-		canvas.moveTo(this.x - this.width/2 + this.radius, this.y - this.height/2);
+		canvas.moveTo(this.x - this.width/2 + this.radius, this.y - this.height/2);	
+
 		canvas.lineTo(this.x + this.width/2 - this.radius, this.y - this.height/2);
 		canvas.quadraticCurveTo(this.x + this.width/2, this.y - this.height/2, this.x + this.width/2, this.y + this.radius - this.height/2);
 		canvas.lineTo(this.x + this.width/2, this.y + this.height/2 - this.radius);
@@ -238,22 +267,38 @@ function Node(x, y, width, height) {
 		canvas.quadraticCurveTo(this.x - this.width/2, this.y + this.height/2, this.x - this.width/2, this.y + this.height/2 - this.radius);
 		canvas.lineTo(this.x - this.width/2, this.y + this.radius - this.height/2);
 		canvas.quadraticCurveTo(this.x - this.width/2, this.y - this.height/2, this.x + this.radius - this.width/2, this.y - this.height/2);
+
 		canvas.closePath();
-		
 		canvas.stroke();
 		canvas.fill();
+	}
 
-		canvas.fillStyle = "white";
+	this.drawText = function() {
 
-		if (! noText) {
-			canvas.textAlign="center";
-			canvas.fillText(this.textContent, this.x, this.y + 9);
+		//Seems to work the best as the offset
+		var topOffset = 9;
+
+		canvas.textAlign = 'center';
+		canvas.fillText(this.textContent, this.x, this.y + topOffset);
+	}
+
+	this.draw = function(noText) {
+
+		this.width = canvas.measureText(this.textContent).width + 28;
+		this.width = this.width < 175 ? 175 : this.width;
+
+		if (this.selected) {
+			this.drawNode('black', 'black', 12);
 		}
 
+		this.drawNode('#5DC6BC', '#23b6b8' , 5);
 
-   
+		if (! noText) {
+			this.drawText();
+		}
 	}
 }
+
 
 function clearCanvas() {
 	canvas.clearRect(0 , 0 , canvasElem.width, canvasElem.height);
@@ -264,6 +309,38 @@ function editKeyChange() {
 		var text = editableWord.val();
 		nodes[editingNode].text(text);
 	}
+}
+
+function deleteNode() {
+
+	if (selectedNode < 0)  return;
+
+	console.log("delete", selectedNode);
+
+	var node = nodes[selectedNode];
+	for (var i = 0; i < node.connections.length; i++) {
+		nodes[node.connections[i]].removeConnection(selectedNode);
+	}	
+
+	delete nodes[selectedNode];
+	renderBackgroundCanvas();
+	renderCanvas();
+}
+
+function selectNode(x, y) {
+	var inNode = insideNode(x, y);
+	if (inNode < 0) return;
+
+	if (selectedNode >= 0) {
+		if (nodes[selectedNode] !== undefined) {
+			nodes[selectedNode].selected = false;
+		}
+	}
+
+	selectedNode = inNode;
+
+	nodes[inNode].selected = true;
+	renderCanvas();
 }
 
 function addNode(x, y) {

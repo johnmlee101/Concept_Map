@@ -36,11 +36,12 @@
 
 			<div class="canvas-holder">
 				<canvas width="500px" height="500px" id="backgroundCanvas" class="canvas"></canvas>
-				<canvas width="500px" height="500px" id="canvas" class="canvas"></canvas>
+				<canvas width="500px" height="500px" id="canvas" class="canvas" tabindex="1"></canvas>
 			</div>
 
 			<div id="toolbar">
-				<div selected>Add</div>
+				<div selected>Select</div>
+				<div>Add</div>
 				<div>Edit</div>
 				<div>Draw</div>
 				<div>Move</div>
