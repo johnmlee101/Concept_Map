@@ -147,7 +147,7 @@ interact('.draggable')
             
             if(lastTime == (new Date).getSeconds()){
                 console.log(event.target.innerHTML);
-                newNode();
+                newNode(event.target.innerHTML);
             } 
             if (grp_contains_id($('.dropzone ul#droppedWords li div'), target.getAttribute('id'))) {
                 return;

@@ -4,6 +4,10 @@ var canvasElem = document.getElementById("canvas");
 canvasElem.setAttribute('width', $(".canvas-holder").width());
 canvasElem.setAttribute('height', $(".canvas-holder").height());
 
+var wordElem = $(".word-elem");
+var editableWord = $('.editable-word');
+editableWord.autoGrowInput({minWidth:30,comfortZone:30});
+
 
 var canvas = oCanvas.create({
 	canvas: "#canvas",
@@ -22,6 +26,7 @@ var selectedNode = undefined;
 var selectedLine = undefined;
 var editingLine = undefined;
 var wasEditing = false;
+var textEditing = false;
 
 var connections = [];
 
@@ -34,7 +39,7 @@ var drawPoint = canvas.display.ellipse({
 	opacity: 0
 });
 
-var image = canvas.display.image({
+var pencil = canvas.display.image({
 	x: 0,
 	y: 0,
 	width: 18,
@@ -44,7 +49,7 @@ var image = canvas.display.image({
 	image: "pencil.svg"
 })
 
-drawPoint.addChild(image);
+drawPoint.addChild(pencil);
 
 drawPoint.bind("mousedown", function() {
 	if (selectedNode !== undefined) {
@@ -63,6 +68,8 @@ drawPoint.bind("mousedown", function() {
 			if (selectedNode !== undefined) {
 				selectedNode.stroke = nodeOptions.stroke;
 				drawPoint.opacity = 0;
+				editPoint.opacity = 0;
+				removePoint.opacity = 0;
 				selectedNode = undefined;
 			}
 
@@ -72,6 +79,7 @@ drawPoint.bind("mousedown", function() {
 
 			selectedLine = line;
 			selectedLine.stroke = "6px #125B5C";
+
 			event.stopPropagation();
 		});
 
@@ -88,6 +96,100 @@ drawPoint.bind("mousedown", function() {
 
 canvas.addChild(drawPoint);
 
+var editPoint = canvas.display.ellipse({
+	x: 0,
+	y: 0,
+	origin: {x: "center", y: "center"},
+	radius: 16,
+	fill: "#125B5C",
+	opacity: 0
+});
+
+var language = canvas.display.image({
+	x: 0,
+	y: 0,
+	width: 18,
+	height: 18,
+	origin: {x: "center", y: "center"},
+	align: "center",
+	image: "language.svg"
+})
+
+editPoint.addChild(language);
+
+editPoint.bind("mousedown", function(event) {
+	if (selectedNode !== undefined) {
+		editableWord.val(selectedNode.children[0].text);
+		wordElem.css("left", selectedNode.x + "px");
+		wordElem.css("top",  selectedNode.y - (selectedNode.height/2)+"px");
+		wordElem.show();
+		editableWord.focus();
+		setTimeout(function() {
+			editableWord.focus();
+			editableWord.select();
+		}, 100);
+	}
+
+	wasEditing = true;
+	textEditing = true;
+
+	selectedNode.children[0].opacity = 0;
+	event.stopPropagation();
+
+});
+
+canvas.addChild(editPoint);
+
+var removePoint = canvas.display.ellipse({
+	x: 0,
+	y: 0,
+	origin: {x: "center", y: "center"},
+	radius: 16,
+	fill: "#125B5C",
+	opacity: 0
+});
+
+var removeImage = canvas.display.image({
+	x: 0,
+	y: 0,
+	width: 18,
+	height: 18,
+	origin: {x: "center", y: "center"},
+	align: "center",
+	image: "cross.svg"
+})
+
+removePoint.addChild(removeImage);
+
+removePoint.bind("mousedown", function() {
+	if (selectedNode !== undefined) {
+		for (var i = 0; i < connections.length; i++) {
+			var item = connections[i];
+
+			if (item.startNode == selectedNode) {
+				item.remove();
+				connections.splice(i, 1);
+				i--;
+			} else if (item.endNode == selectedNode) {
+				item.remove();
+				connections.splice(i, 1);
+				i--;
+			}
+			
+		}
+		
+		selectedNode.remove();
+		selectedNode = undefined;
+		drawPoint.opacity = 0;
+		editPoint.opacity = 0;
+		removePoint.opacity = 0;
+		canvas.redraw();
+
+	}
+});
+
+canvas.addChild(removePoint);
+
 
 canvas.bind("dblclick", function() {
 
@@ -100,10 +202,18 @@ canvas.bind("dblclick", function() {
 
 canvas.bind("click", function() {
 
+	if (textEditing) {
+		wordElem.hide();
+		if (selectedNode !== undefined) selectedNode.children[0].opacity = 1;
+		textEditing = false;
+	}
+
 	//Deselect a node on blank background
 	if (insideNode === undefined && selectedNode !== undefined && wasEditing == false) {
 		selectedNode.stroke = nodeOptions.stroke;
 		drawPoint.opacity = 0;
+		editPoint.opacity = 0;
+		removePoint.opacity = 0;
 		selectedNode = undefined;
 
 
@@ -113,6 +223,7 @@ canvas.bind("click", function() {
 	if (wasEditing) {
 		wasEditing = false;
 	}
+
 
 	if (selectedLine !== undefined) {
 		selectedLine.stroke = "5px black";
@@ -137,9 +248,9 @@ canvas.bind("keydown", function (event) {
 
 	//Removed on node on keyevents 46 (delete) and backspace (8)
 	if (event.which == 46 || event.which == 8) {
-		event.preventDefault();
+		if (!textEditing) event.preventDefault();
 		
-		if (selectedNode !== undefined) {
+		if (selectedNode !== undefined && textEditing == false) {
 
 			for (var i = 0; i < connections.length; i++) {
 				var item = connections[i];
@@ -159,6 +270,8 @@ canvas.bind("keydown", function (event) {
 			selectedNode.remove();
 			selectedNode = undefined;
 			drawPoint.opacity = 0;
+			editPoint.opacity = 0;
+			removePoint.opacity = 0;
 			canvas.redraw();
 
 		} else if (selectedLine !== undefined) {
@@ -211,16 +324,16 @@ function newNode(textContent) {
 			node.stroke = nodeOptions.highlightedStoke;
 
 			drawPoint.opacity = 1;
-			drawPoint.x = node.x;
-			drawPoint.y = node.y - node.height/2 - drawPoint.radius/2;
-			drawPoint.zIndex = "front";
+			editPoint.opacity = 1;
+			removePoint.opacity = 1;
+
+			placePoints();
+
 
 			canvas.redraw();
 		},
 		move: function() {
-			drawPoint.x = node.x;
-			drawPoint.y = node.y - node.height/2 - drawPoint.radius/2;
-			drawPoint.zIndex = "front";
+			placePoints();
 		}
 	});
 
@@ -288,8 +401,34 @@ canvas.setLoop(function() {
 		item.end.y = item.endNode.y;
 	});
 
+	if (selectedNode !== undefined) {
+		selectedNode.width = (selectedNode.children[0].width > nodeOptions.minWidth) ? selectedNode.children[0].width + 20 : nodeOptions.minWidth;
+	}
+
 }).start();
 
+
+function editKeyChange() {
+	if (selectedNode !== undefined) {
+		var text = editableWord.val();
+		selectedNode.children[0].text = text;
+		placePoints();
+	}
+}
+
+function placePoints() {
+	drawPoint.x = selectedNode.x;
+	drawPoint.y = selectedNode.y - selectedNode.height/2 - drawPoint.radius/2;
+	drawPoint.zIndex = "front";
+
+	editPoint.x = selectedNode.x - selectedNode.width/2
+	editPoint.y = selectedNode.y - selectedNode.height/2
+	editPoint.zIndex = "front";
+
+	removePoint.x = selectedNode.x + selectedNode.width/2
+	removePoint.y = selectedNode.y - selectedNode.height/2
+	removePoint.zIndex = "front";
+}
 
 $("#canvas")[0].addEventListener("mousemove", function(event) {
 	canvasMouseX = event.layerX;
