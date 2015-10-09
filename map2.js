@@ -291,6 +291,14 @@ canvas.setLoop(function() {
 }).start();
 
 
+$("#canvas")[0].addEventListener("mousemove", function(event) {
+	canvasMouseX = event.layerX;
+	canvasMouseY = event.layerY;
+	mouseX = event.screenX;
+	mouseY = event.screenY;
+	inCanvas = true;
+	lastTime = (new Date).getSeconds();
+});
 
 $(window).resize(function() {
 	canvasElem.setAttribute('width', $(".canvas-holder").width());

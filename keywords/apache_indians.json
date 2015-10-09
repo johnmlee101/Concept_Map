@@ -1,0 +1,25 @@
+//current hack so ajax can be skipped for development convenience
+var jsonText = [
+	{ 
+		"title" : "Home",
+		"body" : 
+		[
+			"The Apache lived in two types of traditional homes: wigwams and teepees. The wigwam was a permanent home. The frame was made from young trees and formed a dome. The frame was covered with bark or grass.",
+			"Teepees were a temporary home that could be moved easily when the tribe was hunting buffalo. The teepee's frame was made of long poles and then covered with buffalo hide. It was shaped like an upside down cone. Both types of homes were small."
+		]
+	},
+	{
+		"title" : "Clothes",
+		"body" : 
+		[
+			"Most of the Apache clothing was made from leather. Sometimes they decorated their clothing with fringes, beads, feathers, and shells. They wore soft leather shoes called moccasins."
+		]
+	},
+	{
+		"title" : "Tools",
+		"body" : 
+		[
+			"To hunt, the Apache used bows and arrows. Arrowheads were made from rocks that were chipped down to a sharp point. Bowstrings were made from animals."
+		]
+	}
+];
