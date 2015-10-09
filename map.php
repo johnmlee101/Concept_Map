@@ -43,6 +43,10 @@
 				<div class="col-md-8" id="canvas2">
 				</div>
 			</div>
+			<div class="left-buttons">
+				<div class="finish">Restart</div>
+				<div class="finish">Finish</div>
+			</div>
 		</div>
 		<div id="right-card">
 
