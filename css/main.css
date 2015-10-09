@@ -23,11 +23,12 @@ html {
 }
 
 .canvas {
-	position: absolute;
+	position: relative;
 	background-color: rgba(0, 0, 0, 0);
 	width: 100%;
 	height: 100%;
 	margin: 0 auto;
+	z-index: 0;
 }
 
 #left-card {
@@ -158,5 +159,20 @@ html {
 	outline: none;
 	background: none;
 	border: none;
+}
+
+.draggable {
+	position: relative;
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	float: left;
+	z-index: 999;
+}
+.filler {
+	width: -webkit-fit-content;
+	width: -moz-fit-content;
+	width: fit-content;
+	float: left;
 }
 

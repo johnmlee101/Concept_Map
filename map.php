@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+<head>
 		<!-- Basic Page Needs
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
 		<meta charset="utf-8">
@@ -22,7 +22,17 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script src="ocanvas-2.8.1.js"></script>
 		<script src="jquery.autoGrowInput.js"></script>
-		
+
+		<!-- Possible Scripts for word bank -->
+		<script type="text/javascript" src="keywords/lib/jquery-sortable-min.js"></script>
+		<script type="text/javascript" src="keywords/lib/d3/d3.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="keywords/lib/interact-1.2.4.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="keywords/js/utils.js"></script>
+		<script type="text/javascript" src="keywords/js/DeckManager.js"></script>
+		<script type="text/javascript" src="keywords/js/DragView.js"></script>
+		<script type="text/javascript" src="keywords/js/KeyBin.js"></script>
+		<script type="text/javascript" src="keywords/js/app_controller.js"></script>
+		<script src="keywords/apache_indians.json" type="text/javascript"></script>
 		<!--<script src="js/main.js"></script>-->
 
 	</head>
@@ -30,7 +40,8 @@
 		<div id="left-card">
 			<h1>Title</h1>
 			<div class="content">
-				Description or experiment info goes here
+				<div class="col-md-8" id="canvas2">
+				</div>
 			</div>
 		</div>
 		<div id="right-card">
@@ -54,8 +65,10 @@
 		</div>
 
 		<script type="application/javascript">
+			app = new app_controller();
+			app.init(400, 200, null);
 		</script>
 		<script src="map2.js"></script>
 
 	</body>
-</html>
+	</html>
