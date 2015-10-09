@@ -19,25 +19,70 @@ var nodeOptions = {
 
 var insideNode = undefined;
 var selectedNode = undefined;
+var selectedLine = undefined;
+var editingLine = undefined;
+var wasEditing = false;
 
-var drawPoint = canvas.display.rectangle({
+var connections = [];
+
+var drawPoint = canvas.display.ellipse({
 	x: 0,
 	y: 0,
-	origin: {x: "center", y: "bottom"},
-	width: 50,
-	height: 20,
-	fill: "black",
+	origin: {x: "center", y: "center"},
+	radius: 16,
+	fill: "#125B5C",
 	opacity: 0
 });
 
+var image = canvas.display.image({
+	x: 0,
+	y: 0,
+	width: 18,
+	height: 18,
+	origin: {x: "center", y: "center"},
+	align: "center",
+	image: "pencil.svg"
+})
+
+drawPoint.addChild(image);
+
 drawPoint.bind("mousedown", function() {
 	if (selectedNode !== undefined) {
+
+
 		var line = canvas.display.line({
 			start: {x: selectedNode.x, y: selectedNode.y},
 			end: {x: canvas.mouse.x, y: canvas.mouse.y},
-			stroke: "5px black"
+			stroke: "5px black",
+			zIndex: "back",
+			opacity: 0
 		})
+
+		line.bind("click", function(event) {
+
+			if (selectedNode !== undefined) {
+				selectedNode.stroke = nodeOptions.stroke;
+				drawPoint.opacity = 0;
+				selectedNode = undefined;
+			}
+
+			if (selectedLine !== undefined) {
+				selectedLine.stroke = "5px black";
+			}
+
+			selectedLine = line;
+			selectedLine.stroke = "6px #125B5C";
+			event.stopPropagation();
+		});
+
+		line.startNode = selectedNode;
+		line.zIndex = "back";
+
 		canvas.addChild(line);
+		editingLine = line;
+
+		$(".canvas-holder").css("cursor",'url("pencil_black.svg"), crosshair');
+
 	}
 });
 
@@ -47,7 +92,7 @@ canvas.addChild(drawPoint);
 canvas.bind("dblclick", function() {
 
 	//Create a new node on double click
-	if (insideNode === undefined) {
+	if (insideNode === undefined && editingLine === undefined) {
 		newNode();
 	}
 
@@ -56,32 +101,78 @@ canvas.bind("dblclick", function() {
 canvas.bind("click", function() {
 
 	//Deselect a node on blank background
-	if (insideNode === undefined && selectedNode !== undefined) {
+	if (insideNode === undefined && selectedNode !== undefined && wasEditing == false) {
 		selectedNode.stroke = nodeOptions.stroke;
 		drawPoint.opacity = 0;
 		selectedNode = undefined;
+
+
 		canvas.redraw();
 	}
 
+	if (wasEditing) {
+		wasEditing = false;
+	}
+
+	if (selectedLine !== undefined) {
+		selectedLine.stroke = "5px black";
+		selectedLine = undefined;
+		canvas.redraw();
+	}
+
+	$(".canvas-holder").css("cursor",'default');
+
+});
+
+canvas.bind("mouseup", function() {
+	if (editingLine !== undefined) {
+		editingLine.remove();
+		editingLine = undefined;
+		wasEditing = true;
+	}
 });
 
 
 canvas.bind("keydown", function (event) {
 
 	//Removed on node on keyevents 46 (delete) and backspace (8)
-	if (selectedNode !== undefined) {
-		if (event.which == 46 || event.which == 8) {
-			event.preventDefault();
+	if (event.which == 46 || event.which == 8) {
+		event.preventDefault();
+		
+		if (selectedNode !== undefined) {
+
+			for (var i = 0; i < connections.length; i++) {
+				var item = connections[i];
+
+				if (item.startNode == selectedNode) {
+					item.remove();
+					connections.splice(i, 1);
+					i--;
+				} else if (item.endNode == selectedNode) {
+					item.remove();
+					connections.splice(i, 1);
+					i--;
+				}
+				
+			}
+			
 			selectedNode.remove();
 			selectedNode = undefined;
 			drawPoint.opacity = 0;
 			canvas.redraw();
+
+		} else if (selectedLine !== undefined) {
+			var i = connections.indexOf(selectedLine);
+			connections.splice(i, 1);
+			selectedLine.remove();
+			selectedLine = undefined;
 		}
+
 	}
 
 });
 
-function newNode() {
+function newNode(textContent) {
 
 	var node = canvas.display.rectangle({
 		x: canvas.mouse.x,
@@ -100,7 +191,7 @@ function newNode() {
 		origin: {x: "center", y: "center"},
 		align: "center",
 		font: "28px Oxygen",
-		text: node.id,
+		text: (textContent) ? textContent : "",
 		fill: "white"
 	});
 
@@ -121,31 +212,83 @@ function newNode() {
 
 			drawPoint.opacity = 1;
 			drawPoint.x = node.x;
-			drawPoint.y = node.y - node.height/2 - 3;
+			drawPoint.y = node.y - node.height/2 - drawPoint.radius/2;
+			drawPoint.zIndex = "front";
 
 			canvas.redraw();
 		},
 		move: function() {
 			drawPoint.x = node.x;
-			drawPoint.y = node.y - node.height/2 - 3;
+			drawPoint.y = node.y - node.height/2 - drawPoint.radius/2;
+			drawPoint.zIndex = "front";
 		}
 	});
 
 	node.bind("mouseenter", function() {
 		insideNode = node;
-		text.text = "Inside Node " + node.id;
 		canvas.redraw();
 	});
 
 	node.bind("mouseleave", function() {
 		if (insideNode == node) insideNode = undefined;
-
-		text.text = node.id;
 		canvas.redraw();
 	})
 
+	node.bind("mouseup", function() {
+		if (editingLine !== undefined) {
+
+
+			var duplicateLine = false;
+
+			if (editingLine.startNode === node) {
+				duplicateLine = true;
+			} else {
+				for (var i = 0; i < connections.length; i++) {
+					if (connections[i].startNode === editingLine.startNode && connections[i].endNode   === node ||
+						connections[i].endNode   === editingLine.startNode && connections[i].startNode === node) {
+
+						duplicateLine = true;
+						editingLine.remove();
+						break;
+					}
+				}
+			}
+
+
+			if (duplicateLine == false) {
+				editingLine.end.x = node.x;
+				editingLine.end.y = node.y;
+
+				editingLine.endNode = node;
+
+				connections.push(editingLine);
+				console.log(editingLine.startNode.id, editingLine.endNode.id);
+			}
+
+			editingLine = undefined;
+		}
+	});
+
 	canvas.addChild(node);
 }
+
+canvas.setLoop(function() {
+	
+	if (editingLine !== undefined) {
+		editingLine.zIndex = "back";
+		editingLine.opacity = 1;
+		editingLine.end.x = canvas.mouse.x;
+		editingLine.end.y = canvas.mouse.y;
+	}
+
+	connections.forEach(function(item) {
+		item.start.x = item.startNode.x;
+		item.start.y = item.startNode.y;
+		item.end.x = item.endNode.x;
+		item.end.y = item.endNode.y;
+	});
+
+}).start();
 
 
 
