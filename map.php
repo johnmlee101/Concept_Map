@@ -20,6 +20,7 @@
 		<!-- Scripts
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="ocanvas-2.8.1.js"></script>
 		<script src="jquery.autoGrowInput.js"></script>
 		
 		<!--<script src="js/main.js"></script>-->
@@ -35,17 +36,17 @@
 		<div id="right-card">
 
 			<div class="canvas-holder">
-				<canvas width="500px" height="500px" id="backgroundCanvas" class="canvas"></canvas>
+				<!-- <canvas width="500px" height="500px" id="backgroundCanvas" class="canvas"></canvas> -->
 				<canvas width="500px" height="500px" id="canvas" class="canvas" tabindex="1"></canvas>
 			</div>
 
-			<div id="toolbar">
+			<!-- <div id="toolbar">
 				<div selected>Select</div>
 				<div>Add</div>
 				<div>Edit</div>
 				<div>Draw</div>
 				<div>Move</div>
-			</div>
+			</div> -->
 
 			<div class="word-elem">
 				<input type="text" class="editable-word" onkeydown="editKeyChange()" onkeypress="editKeyChange()" onkeyup="editKeyChange()"></div>
@@ -54,7 +55,7 @@
 
 		<script type="application/javascript">
 		</script>
-		<script src="map.js"></script>
+		<script src="map2.js"></script>
 
 	</body>
 </html>
