@@ -10,7 +10,7 @@
 
 		<!-- Mobile Specific Metas
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 		<!-- CSS
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -72,7 +72,10 @@
 			app = new app_controller();
 			app.init(400, 200, null);
 		</script>
-		<script src="map2.js"></script>
+		<script src="ConceptMap.js"></script>
+		<script src="Node.js"></script>
+		<script src="Conncetion.js"></script>
+		<script src="map3.js"></script>
 
 	</body>
 	</html>
