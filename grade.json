@@ -1,5 +1,5 @@
 [
 	{"root": "Jeff", "connections": ["Grad Students", "Programmers"]},
-	{"root": "Grad Students", "connections": ["Josh", "Janell"]},
+	{"root": "GradStudents", "connections": ["Josh", "Janell"]},
 	{"root": "Programmers", "connections": ["Matt", "John", "Ben"]}
 ]

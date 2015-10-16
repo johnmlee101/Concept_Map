@@ -5,10 +5,10 @@ function Node(x, y, text) {
 	this._text = text
 
 	this.fill = "#5DC6BC"
-	this.stroke = "outside 5px #23b6b8"
-	this.highlightedStoke  = "outside 6px #125B5C"
+	this.stroke = "3px #23b6b8"
+	this.highlightedStoke  = "3px #125B5C"
 	this.errorFill = "#D32F2F"
-	this.errorStroke = "outside 5px #B71C1C"
+	this.errorStroke = "3px #B71C1C"
 	this.minWidth = 250
 	this.minHeight = 50
 	this.font = "28px Oxygen"
@@ -164,7 +164,7 @@ Node.prototype = {
 	},
 
 	edit: function() {
-		this.nodeObject.stroke = "outside 6px #FFAA00"
+		this.nodeObject.stroke = "4px #FFAA00"
 		this.textObject.opacity = 0
 		conceptMap.editNode()
 		canvas.redraw()
