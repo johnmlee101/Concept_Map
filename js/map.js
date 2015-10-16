@@ -111,7 +111,7 @@ function editKeyChange() {
 }
 
 function grade() {
-	$.getJSON("grade.json", function(data) {
+	$.getJSON("assets/grade.json", function(data) {
 		conceptMap.reset()
 		for (var i = 0; i < data.length; i++) {
 			var rootCheckNode = data[i];
