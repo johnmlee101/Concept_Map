@@ -32,16 +32,27 @@ function Node(x, y, text) {
 	this.nodeObject.parentNode = this
 
 
-	this._select = function(e) {
-		if (conceptMap.selectedNode !== undefined) 
-			conceptMap.selectedNode.normal()
+	this._select = function(event) {
+		if (conceptMap.selectedNode !== this.parentNode) {
+			conceptMap.deselect()
 
-		this.parentNode.selected = true
-		conceptMap.selectedNode = this.parentNode
-		if (e) e.stopPropagation()
+			this.parentNode.selected = true
+			conceptMap.selectedNode = this.parentNode
+		}
+
+
+		if (event) event.stopPropagation()
 	}
 
 	this.nodeObject.bind("click", this._select)
+
+	this.nodeObject.bind("dblclick", function(event) {
+		if (conceptMap.selectedNode == this.parentNode) {
+			this.parentNode.edit()
+		}
+
+		event.stopPropagation()
+	})
 
 	this.nodeObject.dragAndDrop({
 		changeZindex: true,
@@ -73,12 +84,12 @@ function Node(x, y, text) {
 	})
 
 	this.nodeObject.bind("mouseleave", function() {
-		if (conceptMap.insideNode == this.parentNode) 
+		if (conceptMap.insideNode == this.parentNode)
 			conceptMap.insideNode = undefined
 	})
 
 	this.textObject = canvas.display.text({
-		x: 0, 
+		x: 0,
 		y: 0,
 		origin: {x: "center", y: "center"},
 		align: "center",
@@ -121,9 +132,9 @@ Node.prototype = {
 
 	//automatically resize when we set text
 	set text(val) {
-		if (typeof val !== 'string') {	
+		if (typeof val !== 'string') {
 			return
-		}	
+		}
 
 		this.textObject.text = val
 
@@ -136,7 +147,7 @@ Node.prototype = {
 		this._text = val
 
 		canvas.redraw()
-		
+
 	},
 
 	get text() {
@@ -146,6 +157,14 @@ Node.prototype = {
 	//return to normal unselected state
 	normal: function() {
 		this.selected = false
+		this.textObject.opacity = 1
+	},
+
+	edit: function() {
+		this.nodeObject.stroke = "outside 6px #FFAA00"
+		this.textObject.opacity = 0
+		conceptMap.editNode()
+		canvas.redraw()
 	},
 
 	remove: function() {
@@ -167,7 +186,7 @@ Node.prototype = {
 
 	addConnection: function(connection) {
 		this.connections.push(connection)
-	}, 
+	},
 
 	removeConnection: function(connection) {
 		var i = this.connections.indexOf(connection)
