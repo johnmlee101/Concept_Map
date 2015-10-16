@@ -121,5 +121,11 @@ ConceptMap.prototype = {
 		wordElem.hide()
 
 		this.textEditing = false
+	},
+
+	reset: function() {
+		this.nodes.forEach(function(node) {
+			node.normal()
+		})
 	}
 }

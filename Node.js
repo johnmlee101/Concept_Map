@@ -7,6 +7,8 @@ function Node(x, y, text) {
 	this.fill = "#5DC6BC"
 	this.stroke = "outside 5px #23b6b8"
 	this.highlightedStoke  = "outside 6px #125B5C"
+	this.errorFill = "#D32F2F"
+	this.errorStroke = "outside 5px #B71C1C"
 	this.minWidth = 250
 	this.minHeight = 50
 	this.font = "28px Oxygen"
@@ -157,6 +159,7 @@ Node.prototype = {
 	//return to normal unselected state
 	normal: function() {
 		this.selected = false
+		this.nodeObject.fill = this.fill
 		this.textObject.opacity = 1
 	},
 
@@ -171,10 +174,8 @@ Node.prototype = {
 		var _parentNode = this
 		this.connections.forEach(function(connection) {
 			if (connection.startNode == _parentNode) {
-				console.log("start node")
 				connection.endNode.removeConnection(connection)
 			} else if (connection.endNode == _parentNode) {
-				console.log("end node")
 				connection.startNode.removeConnection(connection)
 			}
 			conceptMap.removeConnection(connection)
@@ -192,42 +193,10 @@ Node.prototype = {
 		var i = this.connections.indexOf(connection)
 
 		this.connections.splice(i, 1)
+	},
+
+	error: function() {
+		this.nodeObject.fill = this.errorFill
+		this.nodeObject.stroke = this.errorStroke
 	}
 }
-
-		// this.nodeObject.bind("mouseup", function() {
-		// 	if (editingLine !== undefined) {
-
-
-		// 		var duplicateLine = false;
-
-		// 		if (editingLine.startNode === node) {
-		// 			duplicateLine = true;
-		// 		} else {
-		// 			for (var i = 0; i < connections.length; i++) {
-		// 				if (connections[i].startNode === editingLine.startNode && connections[i].endNode   === node ||
-		// 					connections[i].endNode   === editingLine.startNode && connections[i].startNode === node) {
-
-		// 					duplicateLine = true;
-		// 					editingLine.remove();
-		// 					break;
-		// 				}
-		// 			}
-		// 		}
-
-
-		// 		if (duplicateLine == false) {
-		// 			editingLine.end.x = node.x;
-		// 			editingLine.end.y = node.y;
-
-		// 			editingLine.endNode = node;
-
-		// 			connections.push(editingLine);
-		// 			console.log(editingLine.startNode.id, editingLine.endNode.id);
-		// 		}
-
-		// 		editingLine = undefined;
-		// 	}
-		// });
-
-

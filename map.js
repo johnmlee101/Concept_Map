@@ -18,7 +18,7 @@ canvas.bind("dblclick", function() {
 
 	//Create a new node on double click
 	if (conceptMap.insideNode === undefined) {
-		conceptMap.addNode(new Node(canvas.mouse.x, canvas.mouse.y, "Test text"))
+		conceptMap.addNode(new Node(canvas.mouse.x, canvas.mouse.y, ""))
 	}
 
 	conceptMap.deselect()
@@ -35,37 +35,6 @@ canvas.bind("click", function() {
 
 	if (conceptMap.selectedLine)
 		conceptMap.deselect()
-	// if (textEditing) {
-	// 	wordElem.hide()
-	// 	if (selectedNode !== undefined) selectedNode.children[0].opacity = 1
-	// 	textEditing = false
-	// }
-
-	// //Deselect a node on blank background
-	// if (insideNode === undefined && selectedNode !== undefined && wasEditing == false) {
-	// 	selectedNode.stroke = nodeOptions.stroke
-	// 	drawPoint.opacity = 0
-	// 	editPoint.opacity = 0
-	// 	removePoint.opacity = 0
-	// 	selectedNode = undefined
-
-
-	// 	canvas.redraw()
-	// }
-
-	// if (wasEditing) {
-	// 	wasEditing = false
-	// }
-
-
-	// if (selectedLine !== undefined) {
-	// 	selectedLine.stroke = "5px black"
-	// 	selectedLine = undefined
-	// 	canvas.redraw()
-	// }
-
-	// $(".canvas-holder").css("cursor",'default')
-
 })
 
 canvas.bind("mouseup", function() {
@@ -111,6 +80,11 @@ canvas.bind("keydown", function (event) {
 		if (conceptMap.selectedNode) {
 			conceptMap.selectedNode.edit()
 		}
+	} else if (event.which == 13) {
+		if (conceptMap.textEditing) {
+			conceptMap.deselect()
+			event.preventDefault()
+		}
 	}
 
 })
@@ -134,6 +108,47 @@ function editKeyChange() {
 		var text = editableWord.val();
 		conceptMap.selectedNode.text = text;
 	}
+}
+
+function grade() {
+	$.getJSON("grade.json", function(data) {
+		conceptMap.reset()
+		for (var i = 0; i < data.length; i++) {
+			var rootCheckNode = data[i];
+
+			var root = conceptMap.nodes.filter(function(x) {
+				return rootCheckNode.root == x.text
+			})[0]
+
+			if (root === undefined) {
+				console.log("Missing node", rootCheckNode.root)
+				return
+			} else {
+				root.connections.forEach(function(connection) {
+					var rootLeaf = undefined
+
+					if (connection.startNode == root) {
+						rootLeaf = connection.endNode
+					} else {
+						rootLeaf = connection.startNode
+					}
+
+					var leaf = rootCheckNode.connections.indexOf(rootLeaf.text)
+					if (leaf >= 0) {
+						rootCheckNode.connections.splice(leaf, 1)
+					}
+
+				})
+
+				if (rootCheckNode.connections.length > 0) {
+					console.log(rootCheckNode.root, "is missing ", rootCheckNode.connections)
+					root.error()
+					return
+				}
+			}
+		}
+		console.log("verified mostly!")
+	})
 }
 
 $(window).resize(function() {
