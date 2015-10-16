@@ -26,7 +26,7 @@ function ConceptMap() {
 		height: 18,
 		origin: {x: "center", y: "center"},
 		align: "center",
-		image: "pencil.svg"
+		image: "images/pencil.svg"
 	})
 
 	this.drawPoint.addChild(this.pencil)
@@ -41,7 +41,7 @@ function ConceptMap() {
 
 			this.conceptMap.editingConnection = new Connection(this.conceptMap.selectedNode)
 
-			$(".canvas-holder").css("cursor",'url("pencil_black.svg"), crosshair');
+			$(".canvas-holder").css("cursor",'url("images/pencil_black.svg"), crosshair');
 		}
 	})
 
