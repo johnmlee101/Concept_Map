@@ -103,7 +103,6 @@ ConceptMap.prototype = {
 			editableWord.val(this.selectedNode.text)
 			wordElem.css("left", this.selectedNode.x + "px")
 			wordElem.css("top",  this.selectedNode.y - (this.selectedNode.minHeight/2)+"px")
-			console.log(this.selectedNode.textObject.width)
 			editableWord.css("width", this.selectedNode.textObject.width*2)
 			wordElem.show()
 			editableWord.focus()
@@ -124,6 +123,7 @@ ConceptMap.prototype = {
 	},
 
 	reset: function() {
+		this.deselect()
 		this.nodes.forEach(function(node) {
 			node.normal()
 		})
