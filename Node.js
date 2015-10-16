@@ -38,6 +38,7 @@ function Node(x, y, text) {
 		if (conceptMap.selectedNode !== this.parentNode) {
 			conceptMap.deselect()
 
+			this.parentNode.normal()
 			this.parentNode.selected = true
 			conceptMap.selectedNode = this.parentNode
 		}
@@ -153,7 +154,7 @@ Node.prototype = {
 	},
 
 	get text() {
-		return this._text
+		return this._text.trim()
 	},
 
 	//return to normal unselected state
