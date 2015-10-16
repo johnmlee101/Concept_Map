@@ -228,6 +228,7 @@ html {
 	width: -moz-fit-content;
 	width: fit-content;
 	float: left;
+	cursor: pointer;
 	z-index: 999;
 }
 .filler {
