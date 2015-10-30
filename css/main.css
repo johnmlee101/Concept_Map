@@ -146,19 +146,19 @@ html {
 
 }
 .editable-word {
-	height: 50px;
-	line-height: 50px;
-	font-size: 28px;
+	height: 30px;
+	line-height: 30px;
+	font-size: 20px;
 	/*font-weight: 600;*/
 	color: white;
 	text-align: center;
-	min-width: 60px;
+	min-width: 30px;
 	margin: 0 auto;
 	left: 50%;
 	-webkit-transform: translateX(-50%);
 	transform: translateX(-50%);
 	position: absolute;
-	max-height: 50px;
+	max-height: 30px;
 	white-space: nowrap;
 	font-family: 'Oxygen';
 	padding: 0 10px;
