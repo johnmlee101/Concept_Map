@@ -7,6 +7,8 @@ function ConceptMap() {
 	this.editingLine = undefined
 	this.selectedLine = undefined
 
+	this.lock = true
+
 	this.textEditing = false
 
 	this.drawPoint = canvas.display.ellipse({
@@ -14,7 +16,7 @@ function ConceptMap() {
 		y: 0,
 		origin: {x: "center", y: "center"},
 		align: "center",
-		radius: 16,
+		radius: 12,
 		fill: "#125B5C",
 		opacity: 0
 	});
@@ -22,8 +24,8 @@ function ConceptMap() {
 	this.pencil = canvas.display.image({
 		x: 0,
 		y: 0,
-		width: 18,
-		height: 18,
+		width: 14,
+		height: 14,
 		origin: {x: "center", y: "center"},
 		align: "center",
 		image: "images/pencil.svg"

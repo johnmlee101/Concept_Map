@@ -1,5 +1,40 @@
 [
-	{"root": "Jeff", "connections": ["GradStudents", "Programmers"]},
-	{"root": "GradStudents", "connections": ["Josh", "Janell"]},
-	{"root": "Programmers", "connections": ["Matt", "John", "Ben"]}
+	{
+		"root": "Jeff", 
+		"connections": [
+			"GradudateStudents",
+			"Programmers"
+		],
+		"errors": [
+			"Think about how grad students might be connected to the boss",
+			"Think about how programmers might be connected to the boss"
+		]
+	},
+
+	{
+		"root": "GradudateStudents", 
+		"connections": [
+			"Josh",
+			"Janell"
+		],
+		"errors": [
+			"What catagory would Josh fall under?",
+			"What catagory would Janell fall under?"
+		]
+	},
+
+	{
+		"root": "Programmers", 
+		"connections": [
+			"Matt",
+			"John",
+			"Ben"
+		],
+		"errors": [
+			"What does Matt work on for the psych lab?",
+			"What does John work on for the psych lab?",
+			"What does Ben work on for the psych lab?"
+		]
+	}
+
 ]

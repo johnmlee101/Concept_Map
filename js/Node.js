@@ -9,9 +9,9 @@ function Node(x, y, text) {
 	this.highlightedStoke  = "3px #125B5C"
 	this.errorFill = "#D32F2F"
 	this.errorStroke = "3px #B71C1C"
-	this.minWidth = 250
-	this.minHeight = 50
-	this.font = "28px Oxygen"
+	this.minWidth = 130
+	this.minHeight = 30
+	this.font = "20px Oxygen"
 
 	this._selected = false
 
@@ -97,9 +97,11 @@ function Node(x, y, text) {
 		origin: {x: "center", y: "center"},
 		align: "center",
 		font: this.font,
-		text: (this._text) ? this._text : "",
+		text: "",
 		fill: "white"
 	})
+
+	this.text = this._text
 
 	this.nodeObject.addChild(this.textObject)
 
@@ -141,7 +143,7 @@ Node.prototype = {
 
 		this.textObject.text = val
 
-		if (this.textObject.width > this.minWidth) {
+		if (this.textObject.width > this.minWidth-20) {
 			this.nodeObject.width = this.textObject.width + 20
 		} else {
 			this.nodeObject.width = this.minWidth
@@ -165,10 +167,12 @@ Node.prototype = {
 	},
 
 	edit: function() {
-		this.nodeObject.stroke = "4px #FFAA00"
-		this.textObject.opacity = 0
-		conceptMap.editNode()
-		canvas.redraw()
+		if (!conceptMap.lock) {
+			this.nodeObject.stroke = "4px #FFAA00"
+			this.textObject.opacity = 0
+			conceptMap.editNode()
+			canvas.redraw()
+		}
 	},
 
 	remove: function() {
