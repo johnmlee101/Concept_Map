@@ -1,5 +1,12 @@
 $(function() {
-	var wordList = jsonText[0].body[0].split(" ");
+	loadWordList(1);
+});
+
+function loadWordList(index) {
+	var wordList = jsonText[index].body[0].split(" ");
+	$("#left-card > h3").remove();
+	$("#canvas2").empty();
+	$("#left-card > h1").after('<h3>' + jsonText[index].title + '</h3>')
 	wordList.forEach(function(word) {
 		$("#canvas2").append('<div class="draggable">' + word + "&nbsp;</div>");
 	});
@@ -17,5 +24,4 @@ $(function() {
 			}
 		}
 	});
-});
-
+}

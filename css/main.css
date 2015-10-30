@@ -243,3 +243,27 @@ html {
 	float: left;
 }
 
+.errorC{
+	position: absolute;
+	padding: 1em;
+	bottom: 160px;
+	font-size: 1.5em;
+	color: #9C27B0;
+	text-align: center;
+		height: 100px;
+		width: 100%;
+		left: 0;
+		z-index: 3;
+}
+
+.error {
+	display: none;
+	margin: 0 auto;
+	width: 100%;
+	min-height: 100px;
+	border: 1px dashed #9C27B0;
+}
+
+#left-card > h3 {
+	text-align: center;
+}
