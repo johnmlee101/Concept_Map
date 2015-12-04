@@ -1,25 +1,25 @@
-//current hack so ajax can be skipped for development convenience
-var jsonText = [
-	{ 
-		"title" : "Home",
-		"body" : 
-		[
-			"The Apache lived in two types of traditional homes: wigwams and teepees. The wigwam was a permanent home. The frame was made from young trees and formed a dome. The frame was covered with bark or grass.",
-			"Teepees were a temporary home that could be moved easily when the tribe was hunting buffalo. The teepee's frame was made of long poles and then covered with buffalo hide. It was shaped like an upside down cone. Both types of homes were small."
-		]
-	},
-	{
-		"title" : "Clothes",
-		"body" : 
-		[
-			"Most of the Apache clothing was made from leather. Sometimes they decorated their clothing with fringes, beads, feathers, and shells. They wore soft leather shoes called moccasins."
-		]
-	},
-	{
-		"title" : "Tools",
-		"body" : 
-		[
-			"To hunt, the Apache used bows and arrows. Arrowheads were made from rocks that were chipped down to a sharp point. Bowstrings were made from animals."
-		]
-	}
-];
+{ 
+	"title" : "Apache Indians",
+	"text" : [
+		"The <span class='dr'>Apache</span> lived in two types of traditional <span class='dr'>homes</span>: wigwams and teepees. The <span class='dr'>wigwam</span> was a <span class='dr'>permanent</span> home. The frame was made from <span class='dr'>young trees</span> and formed a <span class='dr'>dome</span>. The frame was covered with <span class='dr'>bark</span> or <span class='dr'>grass</span>.",
+		"<span class='dr'>Teepees</span> were a <span class='dr'>temporary</span> home that could be <span class='dr'>moved</span> easily when the tribe was <span class='dr'>hunting</span> buffalo. The teepee's frame was made of long <span class='dr'>poles</span> and then covered with <span class='dr'>buffalo hide</span>. It was shaped like an upside down <span class='dr'>cone</span>."
+	],
+
+	"word_bank" : [
+		"Apache",
+		"Homes",
+		"Wigwam",
+		"Permanent",
+		"Young Trees",
+		"Dome",
+		"Bark",
+		"Grass",
+		"Teepees",
+		"Temporary",
+		"Moved",
+		"Hunting",
+		"Poles",
+		"Buffalo Hide",
+		"Cone"
+	]
+}

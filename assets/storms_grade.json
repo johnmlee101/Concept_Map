@@ -1,0 +1,78 @@
+[
+	{
+		"root": "storms", 
+		"connections": [
+			"thunderstorm",
+			"hurricane",
+			"tornado",
+			"blizzard"
+		],
+		"errors": [
+			"thunderstorm is not connected to storms error",
+			"hurricane is not connected to storms error",
+			"tornado is not connected to storms error",
+			"blizzard is not connected to storms error"
+		]
+	},
+
+	{
+		"root": "thunderstorm", 
+		"connections": [
+			"thunder",
+			"hail",
+			"lightning",
+			"strongwinds"
+		],
+		"errors": [
+			"what sound will happen in a thunderstorm",
+			"what type of precipitation can happen in thunderstorms",
+			"what bright flash will happen in a thunderstorm",
+			"what kind of wind will a thunderstorm have"
+		]
+	},
+
+	{
+		"root": "hurricane", 
+		"connections": [
+			"strongwinds",
+			"thunder",
+			"flooding",
+			"damagesproperty"
+		],
+		"errors": [
+			"what kind of wind is in a tornado",
+			"what sound will a hurricane have",
+			"what will happen due to tons of rain from the hurricane",
+			"what will the hurricane do to the property"
+		]
+	},
+
+	{
+		"root": "tornado", 
+		"connections": [
+			"funnel",
+			"land",
+			"rotatingwind"
+		],
+		"errors": [
+			"what forms before a tornado",
+			"where does a tornado form",
+			"what kind of wind is in a tornado"
+		]
+	},
+
+	{
+		"root": "blizzard", 
+		"connections": [
+			"cold",
+			"snow",
+			"strongwinds"
+		],
+		"errors": [
+			"what storm is cold",
+			"what storm might have snow",
+			"what are the winds like in a blizzard"
+		]
+	}
+
+]

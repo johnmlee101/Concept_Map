@@ -1,0 +1,121 @@
+[
+	{
+		"root": "apache",
+		"parent": "",
+		"connections": [
+			"homes"
+		],
+		"errors": [
+			"What do the Apache Indians live in?"
+		]
+	},
+
+	{
+		"root": "homes",
+		"parent": "apache",
+		"connections": [
+			"wigwam",
+			"teepees"
+		],
+		"errors": [
+			"What is the first type of homes the Apache live in?",
+			"What is the second type of homes the Apache live in?"
+		]
+	},
+
+	{
+		"root": "wigwam", 
+		"parent": "homes",
+		"connections": [
+			"permanent",
+			"young trees",
+			"dome",
+			"bark",
+			"grass"
+		],
+		"errors": [
+			"Is the wigwam easy to move or permanent?",
+			"What is the frame of the wigwam made out of?",
+			"What shape did the wigwam form?",
+			"What was first thing that wigwams were covered with?",
+			"What was second thing that wigwams were covered with?"
+		]
+	},
+
+	{
+		"root": "teepees", 
+		"parent": "homes",
+		"connections": [
+			"temporary",
+			"moved", 
+			"hunting",
+			"poles",
+			"buffalo hide",
+			"cone"
+		],
+		"errors": [
+			"Is the teepee a temporary home?",
+			"Is the teepee permanent or easy to move?",
+			"When was the teepee used?",
+			"What was the tepee made out of?",
+			"What was the tepee covered with?",
+			"What was the tepee shaped like?"
+		]
+	},
+
+	{
+		"root": "permanent",
+		"parent": "wigwam",
+		"connections": []
+	}, 
+	{
+		"root": "young trees",
+		"parent": "wigwam",
+		"connections": []
+	}, 
+	{
+		"root": "dome",
+		"parent": "wigwam",
+		"connections": []
+	}, 
+	{
+		"root": "bark",
+		"parent": "wigwam",
+		"connections": []
+	}, 
+	{
+		"root": "grass",
+		"parent": "wigwam",
+		"connections": []
+	}, 
+	{
+		"root": "moved",
+		"parent": "teepees",
+		"connections": []
+	}, 
+	{
+		"root": "poles",
+		"parent": "teepees",
+		"connections": []
+	}, 
+	{
+		"root": "cone",
+		"parent": "teepees",
+		"connections": []
+	}, 
+	{
+		"root": "buffalo hide",
+		"parent": "teepees",
+		"connections": []
+	}, 
+	{
+		"root": "hunting",
+		"parent": "teepees",
+		"connections": []
+	}, 
+	{
+		"root": "temporary",
+		"parent": "teepees",
+		"connections": []
+	}
+]

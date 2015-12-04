@@ -17,55 +17,41 @@
 		<link rel="stylesheet" href="css/normalize.css">
 		<link rel="stylesheet" href="css/main.css">
 
+		<style>
+			.fill-div {
+				display: block;
+				height: 100%;
+				width: 100%;
+				text-decoration: none;
+			}
+
+			#link {
+				position: absolute;
+				width: 75px;
+				left: 50%;
+				top: 200px;
+				height: 200px;
+			}
+		</style>
+
 		<!-- Scripts
 		–––––––––––––––––––––––––––––––––––––––––––––––––– -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-		<script src="js/jquery.autoGrowInput.js"></script>
-		<script src="js/jquery-ui.min.js" type="text/javascript"></script>
-		<script src="js/ocanvas-2.8.1.js"></script>		
+
+
 
 	</head>
 	<body>
-		<div id="left-card">
-			<h1 class="content-title">Concept Map</h1>
-			
-			<div class="content">
-			</div>
 
-			<div class="error"></div>
-			<div class="left-buttons">
-				<div class="finish" onclick="grade()">Grade</div>
+		<div id="">
+			<div id="main-box" style="text-align: center">
+				<img src="images/stop.png">
+				<div id="link">
+					<a href="map.php" class="fill-div"></a>
+				</div>
 			</div>
 		</div>
 
-		<div id="right-card">
-
-			<div class="canvas-holder">
-				<canvas width="500px" height="500px" id="canvas" class="canvas" tabindex="1"></canvas>
-			</div>
-
-			<div class="word-elem">
-				<input type="text" class="editable-word" onkeydown="editKeyChange()" onkeypress="editKeyChange()" onkeyup="editKeyChange()"></div>
-			</div>
-		</div>
-
-
-		<script src="js/ConceptMap.js"></script>
-		<script src="js/Node.js"></script>
-		<script src="js/Connection.js"></script>
-		<script src="js/Grade.js"></script>
-		<script src="js/map.js"></script>
-		<script src="js/draggable.js" type="text/javascript"></script>
-
-		<script type="text/javascript">
-			<?php 
-				if ($_SESSION[flow] == "retrieval") {
-					echo 'loadWordList("assets/apache_indians.json", "word_bank")';
-				} else {
-					echo 'loadWordList("assets/apache_indians.json", "text")';
-				}
-			?>
-		</script>
 
 	</body>
 	</html>

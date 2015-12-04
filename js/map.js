@@ -92,8 +92,6 @@ canvas.bind("keydown", function (event) {
 
 })
 
-
-
 canvas.setLoop(function() {
 
 	if (conceptMap.editingConnection !== undefined) {
@@ -113,64 +111,6 @@ function editKeyChange() {
 	}
 }
 
-
-function getRootNode(node) {
-	var root = conceptMap.nodes.filter(function(x) {
-				return rootCheckNode.root == x.text
-	})[0]
-}
-
-function grade() {
-	$.getJSON("assets/grade.json", function(data) {
-		conceptMap.reset()
-
-		for (var i = 0; i < data.length; i++) {
-			var rootCheckNode = data[i];
-
-			//Find the first root node
-			var root = conceptMap.nodes.filter(function(x) {
-				return rootCheckNode.root == x.text
-			})[0]
-
-			if (root === undefined) {
-				console.log("Missing node", rootCheckNode.root)
-				return
-			}
-
-			//Check all the leafs
-			
-			var errors = []
-
-			root.connections.forEach(function(connection) {
-				var rootLeaf = undefined
-
-				if (connection.startNode == root) {
-					rootLeaf = connection.endNode
-				} else {
-					rootLeaf = connection.startNode
-				}
-
-				console.log(rootLeaf.text)
-				var leaf = rootCheckNode.connections.indexOf(rootLeaf.text)
-				if (leaf >= 0) {
-					rootCheckNode.connections.splice(leaf, 1)
-					errors.push(rootCheckNode.errors[leaf])
-					rootCheckNode.errors.splice(leaf, 1)
-				}
-
-			})
-
-			if (rootCheckNode.connections.length > 0) {
-				console.log(rootCheckNode.root, "is missing ", rootCheckNode.connections)
-				console.log(rootCheckNode.errors)
-				root.error()
-				return
-			}
-
-		}
-		console.log("verified mostly!")
-	})
-}
 
 $(window).resize(function() {
 	canvasElem.setAttribute('width', $(".canvas-holder").width())
